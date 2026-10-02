@@ -1,0 +1,70 @@
+# Глава 12. NetGeo — география по IP, haversine
+
+> По мотивам `netgeo.pdf`. Сервисы геолокации (ipstack) отвечают JSON;
+> координаты двух точек дают оценку расстояния по формуле haversine.
+> Сеть в курсе запрещена — работаем с фиксированными ответами.
+
+## Цель главы
+
+Разобрать JSON-ответ геолокации в `Location` и посчитать расстояние
+между локациями по сфере: Москва — Питер ≈ 630 км. В оригинале —
+api.ipstack.com и traceroute; здесь — те же вычисления без сети.
+
+## Теория
+
+- `encoding/json`: теги полей `json:"latitude"` маппят ответ сервиса
+  на структуру; `json.Unmarshal(data, &loc)` — разбор, ошибка формата
+  наружу.
+- Формула haversine (в радианах!): для точек (φ, λ) и (φ₂, λ₂)
+  a = sin²(Δφ/2) + cosφ·cosφ₂·sin²(Δλ/2);
+  d = R · 2·atan2(√a, √(1−a)), R = 6371 км.
+- `math.Sin/Cos/Pow/Sqrt/Atan2` — всё из stdlib; градусы в радианы
+  через `x * math.Pi / 180`.
+- Точность — оценка: высоты у нас нет, Земля не сфера — потому
+  630 км и допуск ±30 км в тестах.
+
+## Условие
+
+1. `ParseLocation(data)` — JSON ipstack → `Location`: поля ip,
+   latitude, longitude, city. Кривой JSON — ошибка.
+2. `HaversineKm(a, b)` — расстояние в километмах между локациями
+   по формуле haversine, R = 6371 км.
+3. Одна и та же точка — расстояние 0.
+
+Wants (необязательно, из `netgeo.pdf`): список hops из traceroute
+и расстояния между соседними узлами, шифрование API-ключа.
+
+## API для реализации
+
+```go
+type Location struct {
+	IP        string
+	Latitude  float64
+	Longitude float64
+	City      string
+}
+func ParseLocation(data []byte) (Location, error)
+func HaversineKm(a, b Location) float64
+```
+
+Сигнатуры и договоры — в `netgeo.go`. Тесты — в `netgeo_test.go`.
+
+## Подсказки
+
+- Поле `City` в ответе может отсутствовать (null) — разбирайся без
+  паники; тег `json:"city"` оставит пустую строку.
+- Проверяй «одинаковая точка → 0» через `math.Abs(d) < 1e-9` —
+  строгое равенство float — плохой тон.
+- Москва (55.75, 37.62) — Питер (59.94, 30.31): получится ~635 км,
+  внутри допуска 630±30.
+
+## Проверка
+
+```
+go test ./12-netgeo/
+go test -tags solution ./12-netgeo/
+```
+
+## Эталон
+
+`go test -tags solution ./12-netgeo/`.

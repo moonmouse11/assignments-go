@@ -1,0 +1,67 @@
+# Глава 6. Search — поиск по файлам
+
+> По мотивам `search.pdf`. Projectlet про grep-подобный инструмент:
+> текст и регулярные выражения, файлы и директории, рекурсия.
+
+## Цель главы
+
+Написать ядро утилиты поиска: найти кандидата в файлах — по подстроке
+или по регулярному выражению, без учёта регистра по умолчанию, с номерами
+строк. Движок отделён от CLI — завтра к нему можно прикрутить GUI.
+
+## Теория
+
+- `regexp.Compile`; префикс `(?i)` — поиск без учёта регистра;
+  `re.FindAllStringIndex(s, -1)` — все совпадения, их длина — их число.
+- `regexp.QuoteMeta` экранирует метасимволы: подстрока превращается
+  в литеральный паттерн — один движок на оба режима.
+- `filepath.WalkDir` — обход дерева; `fs.DirEntry.IsDir()` отличает
+  файлы от директорий; `fs.SkipDir` не пускает обход в поддиректорию.
+- `filepath.Glob(pattern)` — раскрытие wildcard-имён вроде `*.txt`.
+
+## Условие
+
+1. `FindLine(line, needle, o)` — число вхождений needle в line и есть ли
+   хоть одно. `o.Pattern` — needle это регулярное выражение, иначе
+   подстрока. По умолчанию регистр не учитывается.
+2. `SearchFile(path, needle, o)` — совпадения в файле: `[]Hit` (номер
+   строки с 1, текст строки, число вхождений). Нет совпадений — пустой
+   результат без ошибки. Нечитаемый файл — ошибка; некорректный
+   Pattern — совпадений нет.
+3. `ListFiles(paths, recurse)` — разворот имён в список файлов:
+   директория → её файлы (с `recurse` — всё дерево через
+   `filepath.WalkDir`); имя-файл → само имя; wildcard-имя → совпадения
+   `filepath.Glob`. Несуществующее имя без совпадений — ошибка.
+
+Wants (необязательно, как в `search.pdf`): подсветить совпавший текст.
+
+## API для реализации
+
+```go
+type Options struct{ Pattern, CaseSensitive bool }
+type Hit struct{ Line, Count int; Text string }
+func FindLine(line, needle string, o Options) (int, bool)
+func SearchFile(path, needle string, o Options) ([]Hit, error)
+func ListFiles(paths []string, recurse bool) ([]string, error)
+```
+
+Сигнатуры и договоры — в `search.go`. Тесты — в `search_test.go`.
+
+## Подсказки
+
+- Пустой needle — нет вхождений: `(0, false)`, иначе regexp найдёт
+  бесконечную серию пустых совпадений.
+- `bufio.Scanner` читает файл построчно; счётчик строк веди сам.
+- Порядок результата `ListFiles` — порядок paths, внутри — лексикографический.
+
+## Проверка
+
+```
+go test ./06-search/
+go test -tags solution ./06-search/
+```
+
+## Эталон
+
+`solution.go` собирается только с тегом `solution`:
+`go test -tags solution ./06-search/`.

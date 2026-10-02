@@ -1,0 +1,70 @@
+# Глава 11. IPAdr — анализ IPv4/IPv6
+
+> По мотивам `ipadr.pdf`. Разбор адреса: класс, приватность,
+> зарезервированность, сеть/широковещание/маска — чистый интерфейс.
+
+## Цель главы
+
+По строке адреса выдать полную справку: класс, приватность,
+зарезервированность (loopback, link-local), сеть, широковещание,
+маску. Заодно отличить IPv6 от IPv4.
+
+## Теория
+
+- Классы по первому октету: A — 0–127, B — 128–191, C — 192–223,
+  D (multicast) — 224–239, E (экспериментальный) — 240–255.
+- Приватные (RFC 1918): `10/8`, `172.16/12`, `192.168/16`.
+- Зарезервированные: `127/8` loopback, `169.254/16` link-local,
+  `0.0.0.0/8` this network.
+- Сеть = ip & mask, broadcast = сеть | ^mask; октеты → `uint32`
+  сдвигами и обратно.
+- `net.ParseIP` отличит IPv6; `To4() == nil` значит «это не IPv4».
+
+## Условие
+
+1. `ParseV4(s)` — строгий dotted-quad: 4 октета 0–255, только цифры;
+   кривой адрес — ошибка.
+2. `AnalyzeV4(ip, mask)` — справка; пустая маска → классовая
+   (D/E → /32); формы `"255.255.255.192"`, `"/26"`, `"26"`;
+   Network/Broadcast/Mask заполняются всегда.
+3. `IsV6(s)` — true только для IPv6: `"2001:db8::1"` → true,
+   `"1.2.3.4"` → false.
+4. Кривая маска (несмежные биты, октет > 255, префикс > 32) — ошибка.
+
+Wants (необязательно, из `ipadr.pdf`): подкоманды v4/v6, node id.
+
+## API для реализации
+
+```go
+type V4Info struct {
+	Class     string // "A".."E"
+	Private   bool
+	Reserved  string // "", "loopback", "link-local", "this network"
+	Network   string
+	Broadcast string
+	Mask      string
+}
+func ParseV4(s string) ([4]byte, error)
+func AnalyzeV4(ip string, mask string) (V4Info, error)
+func IsV6(s string) bool
+```
+
+Сигнатуры и договоры — в `ipadr.go`. Тесты — в `ipadr_test.go`.
+
+## Подсказки
+
+- Собери `uint32` из октетов: `uint32(o)<<24 | ...` и обратно — сдвигами.
+- Смежность маски: `inv := ^b; inv&(inv+1) == 0` — единицы слева
+  без «дыр».
+- Ошибки — `fmt.Errorf("ipadr: ...")`, в тестах смотри только err != nil.
+
+## Проверка
+
+```
+go test ./11-ipadr/
+go test -tags solution ./11-ipadr/
+```
+
+## Эталон
+
+`go test -tags solution ./11-ipadr/`.
