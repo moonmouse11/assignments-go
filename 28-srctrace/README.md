@@ -48,12 +48,6 @@ func Parse(src string) (RepoInfo, error)
 - Собери совпадения в map «имя → значение», потом проверь наличие всех
   четырёх имён — это и есть проверка «некорректного».
 
-## Развитие
-
-Реальное наполнение `RepoInfo` — вызовы `git rev-parse --abbrev-ref HEAD`,
-`git log -1` через `os/exec`, режим `go:generate`, вывод на нескольких
-языках (`.h`, `.ads`, `.py`). В этой главе git и сеть не трогаем.
-
 ## Проверка
 
 ```
@@ -64,3 +58,19 @@ go vet -tags solution ./28-srctrace/ && go test -tags solution ./28-srctrace/
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- Полей в спеке больше наших четырёх: `VERSION_MAJOR`/`VERSION_MINOR`
+  (дефолт 0), `BUILD_NUMBER` (дефолт 9999), `REPO_NAME`, короткий
+  `COMMIT_ID` и полный `COMMIT_ID_FULL`, `BUILD_TIME`.
+- CLI: `flag` — `-major`/`-minor`/`-build` со значениями по умолчанию,
+  `-lang` (C, C++, Ada, Python, Go), `-output=name` (дефолт `revisions`
+  с расширением по языку: `revisions.h`, `revisions.ads`).
+- Формат по языкам: C — блок `#define VERSION_MAJOR (2)`, Ada —
+  `package revisions is ... end revisions;` — та же генерация на
+  `strings.Builder` и `fmt.Fprintf`, stdlib.
+- Реальное наполнение `RepoInfo` — `git rev-parse --abbrev-ref HEAD`,
+  `git log -1` через `os/exec`, режим `go:generate`; wants — отчёт
+  по конкретному файлу (аргумент CLI). Git — внешняя зависимость,
+  в этой главе не трогаем.

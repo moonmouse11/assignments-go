@@ -59,3 +59,17 @@ go test -tags solution ./16-password/  # зелёный: эталон
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- UN-7: несколько identity на один контекст — ключ не `context`, а пара
+  `(context, username)`: `map[string]map[string]Entry` и `Get(ctx, user)`.
+- UW-2: мастер-пароль вводится по приглашению и никогда — в командной строке:
+  промпт через stdin (`bufio`); скрытие ввода — `golang.org/x/term`
+  (внешняя зависимость).
+- DS-2: CLI `ppm` с флагом `-f` и файлом по умолчанию `~/.ppm/password.dat`
+  (`flag`, `os.UserHomeDir`), подкоманды `create/add/update/show/list`;
+  при промахе печатается `Unable to find Context ... Username ...`.
+- DS-3: в спеке файл — зашифрованный CSV (`encoding/csv`), а не JSON.
+- UW-1: пароль без повторного ввода в login-контексте — keyring/агент
+  (внешние зависимости, в курсе не обязательны).

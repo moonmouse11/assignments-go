@@ -68,3 +68,17 @@ go test -tags solution ./07-diary/
 ## Эталон
 
 `go test -tags solution ./07-diary/`.
+
+## Углубление
+
+- Полная модель задачи: автоматические ID вида `S0:T0` (спринт:задача,
+  выбор по `-t/--task`) и поле Blockage — причина блокировки (аргумент
+  подкоманды blocked).
+- CLI спеки: подкоманды create/modify/todo/done/blocked/report;
+  `-f/--filename` с умолчанием `~/.diary/diary.dia` (`os.UserHomeDir`),
+  `-d/--duration <n>w`, `-e/--estimate`, `-a/--all`; спринты нумеруются
+  подряд, длительность при create — `1w…4w`.
+- Отчёт спеки считает суммарный effort по задачам и статусам; close
+  (из примера) закрывает текущий спринт досрочно, с предупреждением.
+- Сериализация: спека допускает JSON, XML и базы данных. XML —
+  `encoding/xml` из stdlib; БД потребует внешнего драйвера.

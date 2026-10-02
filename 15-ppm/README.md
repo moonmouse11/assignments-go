@@ -54,3 +54,18 @@ go test -tags solution ./15-ppm/   # зелёный: эталон
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- Полная спека — не только формат файла, а CLI-приложение Personal Password
+  Manager: подкоманды `create`, `set`, `reset`, `show` и флаги
+  `-p/--password-file`, `-f/--force`, `-k/--keep`, `-v/--verbose` — наведи
+  CLI поверх `Save`/`Load` (`flag`).
+- `reset` — смена пароля файла (re-keying): прочитать базу старым паролем,
+  записать новым; пример дважды спрашивает «Password» и «New Password».
+- Payload в спеке — простой CSV `context,username,password`, а не JSON:
+  `encoding/csv` как альтернатива сериализации.
+- `set -g` генерирует пароль при записи: встроенный wordlist, число сегментов,
+  разделитель (`-s`, `-t`, `-m`) — реюз генератора из главы 10.
+- Оригинал построен на OpenSSL (внешняя зависимость); в главе всё заменено
+  на stdlib: `crypto/pbkdf2`, `crypto/aes`, `crypto/cipher`, `crypto/sha256`.

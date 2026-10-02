@@ -60,12 +60,6 @@ func Prepare(cfg Config, baseDir string) ([]string, error)
 - Указатель `cur *Project` на последний элемент списка упрощает дополнение
   полей следующих строк.
 
-## Развитие
-
-Настоящий grepo по этой конфигурации клонирует (`git clone` +
-`git checkout reference`), тянет и пушит группы репозиториев, запускает
-`build`-команды. В этой главе — только конфиг и каталоги, сеть не трогаем.
-
 ## Проверка
 
 ```
@@ -76,3 +70,18 @@ go vet -tags solution ./29-repo/ && go test -tags solution ./29-repo/
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- Групп две — public/private: public — только reference (клон с detached
+  HEAD, без push и tag); `server` группы + `repo` проекта склеиваются в
+  полный URL; `reference` — дефолт группы (ветка, тег или commit id),
+  переопределяется в проекте; `build` — shell-команда после clone/pull.
+- `workarea` переводится через переменные окружения (`os.Getenv`);
+  воркспейсы не должны лежать внутри чужого git-дерева.
+- Подкоманды: `init` (каталоги + `git clone` + `git checkout reference` +
+  build; `init <branch>` создаёт ветку во всех private-репо), `pull`,
+  `push` (commit с общим сообщением по группе), `status`, `diff`, `tag`;
+  флаги `--config` (дефолт `Project.yaml`), `--verbose` — каркас на `flag`.
+- Клонирование, pull/push и build-команды — `git` через `os/exec` и сеть:
+  внешние зависимости; в главе — только конфиг и каталоги, stdlib.

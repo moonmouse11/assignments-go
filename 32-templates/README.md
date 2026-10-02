@@ -44,12 +44,6 @@ func Scaffold(kind, name string) (map[string]string, error)
 - Шаблоны не интерпретируй: это просто строки, тесты проверяют вхождения
   (имя проекта, help/version/verbose, ListenAndServe, module).
 
-## Развитие
-
-Полный `templates`-проект хранит шаблоны отдельными файлами в git,
-пишет их на диск, генерирует self-signed сертификаты и ведёт базу
-пользователей с паролями не в открытом виде. Всё это — вне главы.
-
 ## Проверка
 
 ```
@@ -60,3 +54,19 @@ go vet -tags solution ./32-templates/ && go test -tags solution ./32-templates/
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- CLI-шаблон автора — с подкомандами (help/version) и `--config` (дефолт
+  `$HOME/.cli/cli.yaml`); в веб-шаблоне `--verbose` — уровень 1..16
+  (`flag.Int`), а не bool; пароли — не в командной строке (env-переменная).
+- Веб-шаблон: подкоманды `install`, `show`, `user`; https/TLS и вход
+  обязательны до любых сервисов; admin и обычный пользователь;
+  статический html (`http.FileServer`).
+- `install` — интерактив (каталог, порт, URL, пароли admin/user) и
+  self-signed сертификат: keypair.pvt/pub.pem + certfile — `crypto/x509`,
+  `crypto/rsa`, `encoding/pem`, stdlib.
+- База пользователей: пароли не в открытом виде — `golang.org/x/crypto/
+  bcrypt` (внешняя) или свой salt+hash на `crypto/sha256` (stdlib).
+- Шаблоны — отдельные файлы, пишутся на диск (`os.WriteFile`, `embed`);
+  у автора живут в git-репозитории.

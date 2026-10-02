@@ -44,13 +44,6 @@ func Instantiate(tmplDir, dstDir string, vars map[string]string) error
 - `os.ReadFile`/`os.WriteFile` достаточно: шаблоны — текст.
 - Каталоги создавай `os.MkdirAll` — dstDir и вложенные пути сразу.
 
-## Развитие
-
-Настоящий `proj` берёт шаблон из git-репозитория, читает `Clone.cfg`
-(INI-макросы с default/help), умеет переименовывать файлы по директивам
-`proj: rename` и подставлять регулярки (`proj: subs`). Git и INI —
-вне этой главы: только stdlib, без сети.
-
 ## Проверка
 
 ```
@@ -61,3 +54,20 @@ go vet -tags solution ./31-project/ && go test -tags solution ./31-project/
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- `Clone.cfg` в корне шаблона — INI-секции-макросы с полями `default` и
+  `help`; значения переопределяются из командной строки. Разбор —
+  построчный, stdlib (`strings`, `bufio`).
+- Директива ищется в строке по ключевому слову `proj:` (регистр важен),
+  часть строки после вхождения не обрабатывается; директивы живут в
+  комментариях языка — инструмент language-agnostic.
+- `proj: rename $(Proj)` / `$(Proj)_option` — подстановка в basename
+  (`filepath.Base`); `proj: subs word $(Macro)` — замена слова значением
+  макроса, ненастроенный макрос уничтожает вхождение.
+- Meta-макросы `$(Created)`/`$(Username)` нельзя переопределить из CLI.
+- Усиления из спеки: директива `if` (как C-препроцессор), клонирование
+  частичных структур, автогенерация каркаса — interface/implementation,
+  unit-тесты, Makefile. У автора — C++ (glib/boost) и клон из git:
+  внешние зависимости, в главе только stdlib.

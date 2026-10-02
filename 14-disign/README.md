@@ -68,3 +68,17 @@ go test -tags solution ./14-disign/
 ## Эталон
 
 `go test -tags solution ./14-disign/`.
+
+## Углубление
+
+- Подкоманды `sign`/`authenticate` из спеки: `flag.NewFlagSet`;
+  аргумент — список файлов (arg1 arg2 …, `flag.Args()`), не один.
+- RSA-вариант спеки (модель — `openssl dgst -sign/-verify`):
+  `crypto/rsa` + `crypto/sha256` (`rsa.SignPKCS1v15`); сверка с
+  эталонным openssl — внешняя зависимость.
+- Дефолтные ключи: `--private` → `~/.ssh/id_rsa`, `--public` →
+  `~/.ssh/id_rsa.pub` — `os.UserHomeDir` + `os.ReadFile`.
+- Passphrase на приватный ключ (wants): openssh/PEM-форматы —
+  `golang.org/x/crypto/ssh` (внешняя зависимость).
+- Подпись в `[basename].sig` рядом с файлом (`strings.TrimSuffix` +
+  `filepath.Ext`), лог с таймстампами — `log`.

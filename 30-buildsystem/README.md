@@ -59,12 +59,6 @@ func (r *Registry) Traceability(b Build, lang string) (string, error)
   ничего не трогает.
 - Имена файлов — `filepath.Join(logDir, fmt.Sprintf("%d.log", id))`.
 
-## Развитие
-
-Настоящий `jobs` клонирует репозитории, выполняет build-скрипты
-(переменные BUILD_NUMBER, SOURCE_DIR, REVISION_FILE), хранит конфиги
-в toml. Git и скрипты — вне этой главы: только stdlib, без сети.
-
 ## Проверка
 
 ```
@@ -75,3 +69,20 @@ go vet -tags solution ./30-buildsystem/ && go test -tags solution ./30-buildsyst
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- Подкоманды: `build <job> <script> [branch]` (без branch — дефолт из
+  init), `purge` (чистка по retention), `show` (полный лог),
+  `enumerate --current` (ветки), `fetch --set-default` — каркас на `flag`.
+- Флаги: `--jobspace` (дефолт `$JOBSPACE`, имя репо — имя джоба),
+  `--init=scriptdir` (каталог скриптов в репо: shell/python3),
+  `--trace=(C,C++,Ada,Python,Go,Text)` с дефолтом Ada, `--retention=3`,
+  `--pull` (git pull перед сборкой).
+- Сборки — каталоги `<jobspace>/<job>/<branch>/<id>` с `jobs.log`
+  (таймстемп + `......> [I] сообщение`); скрипту через env передаются
+  `BUILD_NUMBER`, `OUTPUT_DIR`, `SOURCE_DIR`, `REVISION_FILE`
+  (`os/exec.Cmd.Env`).
+- Ещё stdlib: hostname build-машины (`os.Hostname`) в трассировке, конфиги
+  `jobs.toml`. Клонирование и запуск скриптов — `git` + сеть: внешние
+  зависимости, в главе только реестр.

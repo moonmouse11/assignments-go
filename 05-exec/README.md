@@ -59,8 +59,11 @@ go test -tags solution ./05-exec/
 
 `go test -tags solution ./05-exec/`
 
-## Развитие (из полного `exec.pdf`)
+## Углубление
 
-`exec run ./script.sh --timer 10s`, лог в `~/logs/<script>.log`,
-подкоманды `status`/`stop` через общий файл состояния, `--clock HH:MM` —
-исполнение в заданное время сегодня (или завтра, если уже прошло).
+- Полный CLI автора: подкоманды `run`/`status`/`stop`/`version`, флаги
+  `--config` (`$HOME/.cli/cli.yaml`), `--verbose`.
+- `--clock HH:MM` — исполнение в заданное время сегодня (или завтра,
+  если уже прошло): `time.Until` до ближайшего следующего момента.
+- Лог `~/logs/<script>.log` с шапкой `Command/Started` и подвалом
+  `Terminated/Duration` — как в примере спеки.

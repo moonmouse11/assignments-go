@@ -58,3 +58,16 @@ go test -tags solution ./27-codex/
 ## Эталон
 
 `go test -tags solution ./27-codex/`
+
+## Углубление
+
+- Полный CLI с подкомандой `convert`: `codex convert sourcefile graphicbase
+  from:count ...`, глобальные `--verbose` и `-h/--help` —
+  `flag.NewFlagSet` + кастомный `Usage`.
+- Выходные файлы `graphicbase.<N>.png` — по одному на фрагмент, нумерация
+  с 0 (`fmt.Sprintf("%s.%d.png", ...)`); лог хода «Will create out.0.png
+  with lines 34 to 42» — `log`.
+- Рендер фрагмента в PNG: `image`, `image/draw`, `image/png` из stdlib, но
+  тексту нужен шрифт — внешний модуль `golang.org/x/image/font/basicfont`;
+  вариант без зависимостей — выдавать listing-текст вместо картинки.
+- Эталон автора — репозиторий gitlab.com/RajaSrinivasan/codex (сеть).

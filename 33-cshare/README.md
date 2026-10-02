@@ -57,12 +57,6 @@ func SyncDir(dir string, s Storage) (SyncReport, error)
   `os.Create` в dir.
 - `io.ReadAll` в Upload — всё содержимое из ридера разом.
 
-## Развитие
-
-Реальные провайдеры: OAuth-инициализация (креды в `~/.cshare/`),
-сохранённые токены (без повторного входа), выбор `--provider`, докачка
-расходящихся по размеру файлов. Сеть и авторизация — вне этой главы.
-
 ## Проверка
 
 ```
@@ -73,3 +67,17 @@ go vet -tags solution ./33-cshare/ && go test -tags solution ./33-cshare/
 ## Эталон
 
 `solution.go` собирается только с тегом `solution`.
+
+## Углубление
+
+- Подкоманды: `initialize` (креды в `~/.cshare/`, каталог создать при
+  отсутствии — `os.MkdirAll`), `list <substr>` (дефолт `mp3`),
+  `download <substr>` с `--local-store` (дефолт `.`), `upload <файлы...>`
+  — каркас CLI на stdlib `flag`.
+- `initialize --provider google|apple|microsoft|aws` (дефолт google),
+  `--refresh` — забыть сохранённые креды; после первой авторизации
+  токены переиспользуются, повторный вход не нужен.
+- `--sync` при download: сравнить размеры локального и облачного файла,
+  передавать только при расхождении (`os.Stat` + размер из Storage).
+- Реальные провайдеры Google Drive/iCloud/OneDrive/AWS — OAuth и сеть:
+  внешние зависимости (API-клиенты); в главе — `MemStorage`, stdlib.

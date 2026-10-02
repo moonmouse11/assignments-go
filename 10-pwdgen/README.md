@@ -68,3 +68,16 @@ go test -tags solution ./10-pwdgen/
 ## Эталон
 
 `go test -tags solution ./10-pwdgen/`.
+
+## Углубление
+
+- CLI из спеки: `flag` — `-s/--segments`, `-p/--separator`,
+  `-m/--max-word-length`, `-v/--verbose`; usage-вывод как у `--help`.
+- Словари: встроенный (`-b/--builtin-wordlist`) — `embed`; свой из
+  файла (`-f/--word-list-file-name`) — `os.Open` + `bufio.Scanner`.
+- `-k/--derive-key`: ключ фиксированной длины из пароля, сложность
+  растёт с `-i/--iterations` — `crypto/sha256`, вывод `encoding/hex`;
+  у автора деривация на OpenSSL (внешняя зависимость, в Go не нужна).
+- `-d/--dump-spec` — дамп Ada-спеки: артефакт оригинальной
+  реализации (Ada/GNAT — внешняя зависимость).
+- Оригинал: gitlab.com/ada23/pwdgen (сеть).
