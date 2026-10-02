@@ -3,7 +3,8 @@
 Полный курс по мотивам projectlets из репозитория
 [RajaSrinivasan/assignments](https://github.com/RajaSrinivasan/assignments):
 33 главы, по одной на каждый projectlet (книги автора — `Ada-Skills-Sharpened.pdf`,
-`Ada-Embedded.pdf`, `techada.pdf`, `codemd.pdf` — в курс не входят).
+`Ada-Embedded.pdf`, `techada.pdf`, `codemd.pdf` — в курс не входят),
+плюс интеграционные задачи — [капстоуны](capstones/) в отдельной директории.
 Спецификации взяты из PDF автора и адаптированы; решения — на Go, только stdlib.
 
 ## Как работать с курсом
@@ -92,17 +93,16 @@
 ## Команды
 
 ```
-go test ./...                     # свои решения, глава за главой (33 красных)
-go test -tags solution ./...      # эталонные решения — все 33 зелёные
+go test ./...                     # свои решения, глава за главой (все красные)
+go test -tags solution ./...      # эталонные решения — все зелёные
 go test -bench . ./04-hanoi       # сравнение производительности алгоритмов
 go vet ./... && go vet -tags solution ./...
 ```
 
 ## Что дальше
 
-- соединять главы в проекты: `10-pwdgen` + `15-ppm` + `16-password` → свой менеджер;
-  `28-srctrace` + `30-buildsystem` → мини-CI с трассировкой;
-- «Развитие» в конце каждой главы — что добавить из полного projectlet
+- **капстоуны** — [`capstones/`](capstones/): интеграционные задачи, собирающие
+  главы в инструменты (два готовы: менеджер паролей, мини-CI); добавляй свои
+  по тому же паттерну;
+- **«Развитие»** в конце каждой главы — что добавить из полного projectlet
   (реальный git, cloud, GUI на fyne, `--clock` в exec и т.д.);
-- книги автора: `Ada-Skills-Sharpened.pdf` — тот же подход на Ada,
-  `dsp.pdf` — полный компаньон ThinkDSP на C++.
