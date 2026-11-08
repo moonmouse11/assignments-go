@@ -90,16 +90,18 @@
 | 32 | [32-templates](32-templates/README.md) | генератор заготовок cli/web | `templates.pdf` |
 | 33 | [33-cshare](33-cshare/README.md) | облачное хранилище через интерфейс Storage | `cshare.pdf` |
 
-## Просмотр как книги (GitBook / Honkit)
+## Просмотр как книги (Honkit / GitHub Pages)
 
 Оглавление — [`SUMMARY.md`](SUMMARY.md), настройки — [`book.json`](book.json).
 
 ```bash
-npx honkit serve    # http://localhost:4000, пересборка при правках
-npx honkit build    # статика в _book/
+npm ci
+npm run book:serve    # http://localhost:4000
+npm run book:build    # статика в _book/
 ```
 
-Для [GitBook](https://www.gitbook.com) подключи репозиторий через Git Sync; корневая страница — этот `README.md`.
+**В интернете:** после мержа в `main` книга публикуется через [GitHub Actions](.github/workflows/pages.yml) на
+**https://moonmouse11.github.io/assignments-go/** — один раз в репозитории: **Settings → Pages → Build and deployment → Source: GitHub Actions**, затем включить workflow **Deploy book to GitHub Pages** (или дождаться пуша в `main`).
 
 ## Команды
 

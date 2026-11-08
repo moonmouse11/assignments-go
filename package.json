@@ -1,0 +1,11 @@
+{
+  "name": "assignments-go-book",
+  "private": true,
+  "scripts": {
+    "book:build": "honkit build",
+    "book:serve": "honkit serve"
+  },
+  "devDependencies": {
+    "honkit": "^6.1.4"
+  }
+}
