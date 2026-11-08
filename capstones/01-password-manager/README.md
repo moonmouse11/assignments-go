@@ -1,7 +1,6 @@
 # Капстоун 1. Password Manager — свой менеджер паролей
 
-> Собирает [`10-pwdgen`](../../10-pwdgen/) и [`16-password`](../../16-password/)
-> (по мотивам `pwdgen.pdf`, `ppm.pdf`, `password.pdf`).
+> Собирает [`10-pwdgen`](../../10-pwdgen/README.md) и [`16-password`](../../16-password/README.md)
 
 ## Цель капстоуна
 

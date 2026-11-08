@@ -1,6 +1,6 @@
 # Глава 17. Secchan — защищённый канал (sealed box)
 
-> По мотивам `secchan.pdf`. Аналог libsodium sealed boxes на stdlib:
+> Аналог libsodium sealed boxes на stdlib:
 > отправитель шифрует под публичным ключом получателя, не имея своего
 > долгосрочного секрета.
 
