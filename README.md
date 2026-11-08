@@ -93,11 +93,12 @@
 ## Просмотр как книги (Honkit / GitHub Pages)
 
 Оглавление — [`SUMMARY.md`](SUMMARY.md), настройки — [`book.json`](book.json).
+Страницы глав в книге — сгенерированные [`PAGE.md`](scripts/book-expand.mjs) (README + заготовки `.go` + тесты; `solution.go` — под спойлером «нажмите, чтобы показать»).
 
 ```bash
 npm ci
 npm run book:serve    # http://localhost:4000
-npm run book:build    # статика в _book/
+npm run book:build    # book:expand + статика в _book/
 ```
 
 **В интернете:** после мержа в `main` книга публикуется через [GitHub Actions](.github/workflows/pages.yml) на

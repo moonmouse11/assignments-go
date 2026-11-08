@@ -2,8 +2,9 @@
   "name": "assignments-go-book",
   "private": true,
   "scripts": {
-    "book:build": "honkit build",
-    "book:serve": "honkit serve"
+    "book:expand": "node scripts/book-expand.mjs",
+    "book:build": "npm run book:expand && honkit build",
+    "book:serve": "npm run book:expand && honkit serve"
   },
   "devDependencies": {
     "honkit": "^6.1.4"
