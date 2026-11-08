@@ -11,8 +11,8 @@
 
 | # | Капстоун | Собирает главы | Что получается |
 |---|----------|----------------|----------------|
-| 1 | [01-password-manager](01-password-manager/) | [`10-pwdgen`](../10-pwdgen/), [`16-password`](../16-password/) | менеджер паролей: генерация + хранилище + защищённый файл |
-| 2 | [02-minici](02-minici/) | [`28-srctrace`](../28-srctrace/), [`30-buildsystem`](../30-buildsystem/) | мини-CI: реестр сборок + трассировка, встраиваемая в приложение |
+| 1 | [01-password-manager](01-password-manager/README.md) | [`10-pwdgen`](../10-pwdgen/README.md), [`16-password`](../16-password/README.md) | менеджер паролей: генерация + хранилище + защищённый файл |
+| 2 | [02-minici](02-minici/README.md) | [`28-srctrace`](../28-srctrace/README.md), [`30-buildsystem`](../30-buildsystem/README.md) | мини-CI: реестр сборок + трассировка, встраиваемая в приложение |
 
 ## Проверка
 

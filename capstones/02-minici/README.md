@@ -1,7 +1,6 @@
 # Капстоун 2. MiniCI — сборки с трассировкой
 
-> Собирает [`28-srctrace`](../../28-srctrace/) и [`30-buildsystem`](../../30-buildsystem/)
-> (по мотивам `srctrace.pdf`, `BuildSystem.pdf`).
+> Собирает [`28-srctrace`](../../28-srctrace/README.md) и [`30-buildsystem`](../../30-buildsystem/README.md)
 
 ## Цель капстоуна
 

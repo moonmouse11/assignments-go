@@ -1,7 +1,7 @@
 # Глава 22. Пятнашки — классическая Game of Fifteen
 
-> По мотивам `Puzzle.pdf` ([15 puzzle](https://en.wikipedia.org/wiki/15_puzzle)).
-> Спека требует изоляции алгоритма от GUI — здесь только модель доски.
+> Классическая [15 puzzle](https://en.wikipedia.org/wiki/15_puzzle).
+> Изоляция алгоритма от GUI — здесь только модель доски.
 
 ## Цель главы
 

@@ -1,6 +1,6 @@
 # Глава 20. Letter Boxed — 12 букв на 4 сторонах
 
-> По мотивам `letterboxed.pdf` — пазла NYT [Letter Boxed](https://www.nytimes.com/puzzles/letter-boxed).
+> Пазл NYT [Letter Boxed](https://www.nytimes.com/puzzles/letter-boxed).
 
 ## Цель главы
 

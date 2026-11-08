@@ -1,6 +1,6 @@
 # Глава 3. Cows and Bulls — игра и решатель
 
-> По мотивам `cowsnbulls.pdf`. Классическая игра
+> Классическая игра
 > ([Bulls and Cows](https://en.wikipedia.org/wiki/Bulls_and_Cows)):
 > обе стороны монеты — и дилер, и игрок.
 
